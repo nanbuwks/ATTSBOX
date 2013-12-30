@@ -1,0 +1,226 @@
+<h1 id="attsboxマニュアル">ATTSBOXマニュアル</h1>
+<h2 id="attsboxについて">ATTSBOXについて</h2>
+<p>ATTSBOXを手にとって頂き，ありがとうございます． ATTSBOXは自分で組み立ててArduinoで制御する３軸NCマシンです，プログラムで簡単に位置制御ができるNCとして，教材等としてご使用下さい． 尚，このキットをNCとして動作させるには別途電源装置とArduinoが必要ですので，予めご了承下さい．</p>
+<div class="figure">
+<img src="./img/attsbox_no_head.jpg" />
+</div>
+<h2 id="概要説明">概要説明</h2>
+<p>ATSBOX( ATomable Tranning Sandbox )は教育向けの汎用3軸ステージです。 以下の特徴があります。</p>
+<ul>
+<li>とても小さい
+<ul>
+<li>家庭の邪魔にならない。</li>
+</ul></li>
+<li>様々に応用できる
+<ul>
+<li>3Dプリンタ、レーザーカッター、コーヒーアート、プロッタ、などなどCNCなどは無理ですが、力のかからないものは何でも！</li>
+</ul></li>
+<li>拡張性が高い
+<ul>
+<li>付属のモータドライバは10万円以上する3Dプリンタのコントローラよりも大容量です。モータを取り換えて大出力に、精度を詰めてみる、速度を上げてみる・・・。簡単な構造で、作り変えなども自在！</li>
+</ul></li>
+<li>簡単に製作できる
+<ul>
+<li>従来の3軸ステージよりはるかに簡単に組立ができます。小学生でも組み立てられるようにしたかったのですが、はんだづけとスライダのねじ切りはちょっと苦しいかな・・・。</li>
+</ul></li>
+<li>技術的特徴
+<ul>
+<li>メカ的には小さいこと、小さいことで荷重、熱応力などが小さくでき、アルミスリーブレールやISOねじによる転造スライダが使えるようになったことで価格の劇的な低減を行っています。</li>
+</ul></li>
+</ul>
+<p>今までArduinoなどの電子工作教材として、LEDやセンサー、音の次のステップとして動くものを目指したのですがいきなりロボット教材など、難易度も価格もとても敷居が高いものでした。難易度を下げ、価格を最終的に1万円程度とし、 なおかつ面白い教材としてスタンダードとなることができるようにならないかと思っています。また、3軸ステージは思った位置に数値通りに止まるメカとなり、様々な実用ガジェットを作る素材となるのではないかと期待しています。</p>
+<h2 id="用意するもの">用意するもの</h2>
+<p>キットの他に工具、電源、Arduino、PC、回路ケースなどが必要となります。</p>
+<h3 id="電源について">電源について</h3>
+<p>どうして電源がついてないの？</p>
+<p>これに必要な電源は12～15V 2Aです。 安全に動かしたい場合は12V、リミットを外して動かしたい場合は 15V、更に例えば3Dプリンタにする場合は5A程度の電源が必要となります。 用途によって電源は異なることから、電源は別売りとしました。</p>
+<h3 id="回路ケース">回路ケース</h3>
+<p>基板を固定するケースがついていません。裸のままなので、適宜 ケースや板に固定してください。なお、動作設定によっては 発熱する場合があるので放熱板などを取り付けてください。</p>
+<h3 id="arduino">Arduino</h3>
+<p>このキットはArduino互換機AKBONE実験キットとセットとして使うことを推奨しています。 それ以外のArduinoまたはArduino互換機を使う場合は、ジャンパーケーブルを 用意してください。</p>
+<h3 id="工具">工具</h3>
+<p>ホットボンド、#2ドライバ、#1ドライバ、1.5mmレンチ、はんだ、はんだごて、やすり、グリス、ニッパー できればM6タップ</p>
+<h2 id="基板の製作">基板の製作</h2>
+<p>ステッピングモーターのドライバ基板ですが、同じものが4連つながっています。</p>
+<div class="figure">
+<img src="./img/LIBLOSTEPMAKING-BUILD.png" />
+</div>
+<p>このうち3つを組み立てます。残り1つはオプションのエクストルーダーを取り付けるときに使用します。 まず、1つを組み立てて動作確認しましょう。 うまくいったら次の2つを組み立てます。 チャンネルごとは写真のように連結します。</p>
+<div class="figure">
+<img src="./img/LIBLOSTEPMAKING-FABLIBSTDCONNECT.png" />
+</div>
+<p>写真のようにSTEPおよびDIRの信号をArduinoから入力します。</p>
+<div class="figure">
+<img src="./img/LIBLOSTEPMAKING-input.png" />
+</div>
+<p>ドライバの色は図のようになります。これはFABLIB用の標準配置ですが、 使用しているコパル製のモーターに付属しているの配線の色配置とは一部異なっています。 モーター配線とは写真のように接続してください。</p>
+<div class="figure">
+<img src="./img/cobal_motor.jpg" />
+</div>
+<!-- 写真は後ほど5枚追加 -->
+
+<h2 id="ソフトウェアの案内">ソフトウェアの案内</h2>
+<p>ソフトウェアは、Arduinoから向きの信号およびパルスを送るだけで 制御できます。 一番簡単なのはBlinkを改良してパルスをモータに送ることです。 Blinkはdelay(1000)としてました。モータには、delayMicrosedondsを 使います。delayMicroseconds(900)ぐらいがいいようです。 また、Ardublockで簡単に制御のチャレンジをしてみましょう！</p>
+<p>ATTSBOXを3Dプリンタとして使うとすれば、ソフトをどうすればいいのでしょうか。 以下のものが必要となります。</p>
+<ul>
+<li>STLファイルをG-codeに直すソフト（PC上のスライサ）</li>
+<li>G-codeをArduinoに送るソフト（PC上のCAM）</li>
+<li>Arduinoからモータドライバを駆動するソフト(Arduino上のファームウェア)</li>
+</ul>
+<p>オープンフォースでは、スライサとしてSlic3r、 http://reprap.org/wiki/Slic3r CAMとしてPrintrun、 http://reprap.org/wiki/Printrun ファームウェアとしてGrbr http://reprap.org/wiki/List_of_Firmware#Grbl を推奨しています。</p>
+<p>また、3Dデータとして、STLファイルを用意してください。 STLファイルを作るテクニックはこちらを参考にしてください。 https://github.com/yamamurasyunsuke/3D-Design-On-The-Open-Highway/wiki/3D-Design-On-The-Open-Highway</p>
+<h2 id="拡張工作の手引き">拡張工作の手引き</h2>
+<h3 id="ワークエリアを大きくしたい">ワークエリアを大きくしたい</h3>
+<p>搬送レールは以下の部材で構成されています。 同じ部材を購入し、長いサイズに置き換えることによってワークエリアを大きくすることができます。（筐体もそれにあわせて大きくする必要があります）</p>
+<ul>
+<li>4x4mmのアルミ角棒</li>
+<li>25mm幅のアルミHチャネル(アルミハカマ)</li>
+<li>M6の寸切りネジ</li>
+</ul>
+<h3 id="dプリンタにしたい">3Dプリンタにしたい</h3>
+<p>ホットエンド、エクストルーダーを取り付けると3Dプリンタとすることができます。 ATTSBOX専用のホットエンド、エクストルーダーは開発中ですが、 テスト中のエクストルーダーはオプションで購入できます。 また、ホットエンドはCell3Pのものを取り付けることができます。（要工夫） 冊子の最後に、3Dプリンタの製作例を載せていますので、是非ご覧下さい<!-- 勝手に追加しました、すみません --></p>
+<h3 id="モーターを大きくしたい">モーターを大きくしたい</h3>
+<p>このドライバ基板にあわせたものとする場合は、ユニポーラ型の ステッピングモータを使ってください。</p>
+<h3 id="もっと大出力にしたい">もっと大出力にしたい</h3>
+<p>このドライバ基板には、サンケンのSLA7070MPRTが使われています。 1A流せますが、もっとパワーアップしたいときは同じサンケンの SLA7073MPRTに差し替えることができ、こちらは3A流すことができます。 また、電源は12Vを使っていますがモータドライバIC自体は44Vまで 加えることができます。 なお、モータードライバの発熱が大きくなるのでその場合は モータードライバに放熱器を取り付けてください。 モータードライバ以外の部品を裏面に取り付け、モータードライバを寝かすレイアウトがお勧めです。</p>
+<!-- togetterの転載はじめ -->
+<h1 id="ちっちゃい3軸ステージattsboxのつくり方">ちっちゃい3軸ステージATTSBOXのつくり方</h1>
+<p>Arduinoでコントロールできる数値制御トレーニングキット。3Dプリンタを目指してGo!。 元の解説ページはtogetter(http://togetter.com/li/609192)を見て下さいね。</p>
+<blockquote>
+<p>tasboxがLIXILトステムの商品にあったので改めattsbox。fablib の名前付け時もLIXILはどうかな→被ってる という過去があり正に因縁。3Dプリンタ用に仮組してみた。ヘッドがまだできてない…</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_no_head.jpg" />
+</div>
+<blockquote>
+<p>コミケ3日目に頒布予定の#ATTSBOXキット。組み立て説明連ツイします。自分で組み立てる3軸NCマシンでステッピングモーターをArduinoから制御します。プログラムで簡単に位置制御ができる教材を目指しています。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_kansei.jpg" />
+</div>
+<blockquote>
+<p>コミケバージョンキットに含まれるのは3軸制御部分だけで、電源、Arduinoを別に購入ください。また写真のオプションをつけるとエクストルーダーが使えるようになります。これにフィラメント、ホットエンドをつけると3Dプリンタに。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_option.jpg" />
+</div>
+<blockquote>
+<p>キットのMDFボード。レーザーカッターで切り目を入れてあります。焦げ跡がありますがキニシナイ！好きな色に塗装してから組み立てるのもいいでしょう。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_mdf.jpg" />
+</div>
+<blockquote>
+<p>パーツ配置はこのようになります。先に全部切り離すのではなく、必要な部分のみを切り出すのがいいでしょう。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_mdf_haiti.png" />
+</div>
+<blockquote>
+<p>よく切れるカッターで切り抜いていきます。工作マットを敷いて机を傷つけないようにしましょう。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_mdf_kiritori.jpg" />
+</div>
+<blockquote>
+<p>金属パーツです。キットに入っているジョイントは写真バージョン進化して形が違うものになりました。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_metal_parts.jpg" />
+</div>
+<blockquote>
+<p>金属パーツは荒切りしたままなので、ヤスリでささくれ等をきれいにして、成形します。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_metal_parts_kezuri.jpg" />
+</div>
+<blockquote>
+<p>寸切りねじは、一方の端を写真のようにやすっておきます。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_sungirineji.jpg" />
+</div>
+<blockquote>
+<p>ホットボンドを写真の位置に塗って</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_hotbond.jpg" />
+</div>
+<blockquote>
+<p>貼り合わせます。接着剤ははみ出ても固まりかけのときに手で取るときれいになります。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_hariawase.jpg" />
+</div>
+<blockquote>
+<p>反対側は向きを注意して、貼り合わせます。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_hariawase_reverse.jpg" />
+</div>
+<blockquote>
+<p>M6タップを持っている人はここでスライダにねじを切ります。なるべく隔壁に寄せてまっすぐになるように気を付けて。ネジ山を100%完成する必要はありません。80%程度でOKです。タップ持ってない人は後でネジを切ります。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_tap.jpg" />
+</div>
+<blockquote>
+<p>レールとスライダを取り付けます。レールは内側に抑えながらホットボンドで止めます。スライダがガタが無く動く程度にきつくしてください。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_rail_slider.jpg" />
+</div>
+<blockquote>
+<p>側面の板を両側に取り付けます。接着剤はいっぱい使用してください。その後モーターブラケットを取り付けます。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_assembly.jpg" />
+</div>
+<blockquote>
+<p>100mmの寸切りネジをねじ込みます。ジョイントを写真のようにジョイントをつけ、グリスをつけてねじ込んでいきます。先にタップを使っていない方はここでちょっと大変…少しずつ何度も往復して貫通してください。まっすぐになるように注意。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_neji_assembly.jpg" />
+</div>
+<blockquote>
+<p>ナイロンチューブ（太）を20mm、（細）を15mm程度に切ります。ジョイントを一旦外して（太）をセット。（細）はモーター軸に被せます。ジョイントをレールフレーム内部にセットした後にモーター強く押し込み、ホットボンドでを接着。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_joint_assembly.jpg" />
+</div>
+<blockquote>
+<p>これでz軸が完成しました。同じようにして、x軸とy軸を作ります。x軸は20mm長くなります。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_xy_assembly.jpg" />
+</div>
+<blockquote>
+<p>筐体を作ります。底面にホットボンドで側面を取り付けます。その後天井と三角板を取り付けます。ぐらつかないようにしっかり止めましょう。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_body.jpg" />
+</div>
+<blockquote>
+<p>裏面に補強板を2枚、底面にY軸ガイドを取り付けます。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_hokyou_guide.jpg" />
+</div>
+<blockquote>
+<p>X軸（長い軸）のスライダを2階建てにします。Z軸のスライダと直角に接着し、フレームに取り付けます。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_x_revo.jpg" />
+</div>
+<blockquote>
+<p>Y軸のスライダを2階建てにします。鏡のカバーを折り取り、スライダに載せます。鏡の位置およびY軸の位置を調整しながら、それぞれ接着します。位置はZ軸に何のヘッドを載せるかで調整してください。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_y_revo.jpg" />
+</div>
+<blockquote>
+<p>配線をして、試運転をします。写真に接続しているのはFABLIB製の4連LIBLOSTEP。うまく動かない場合は、補強やグリスアップ、スライダの慣らしを行います。</p>
+</blockquote>
+<div class="figure">
+<img src="./img/attsbox_try.jpg" />
+</div>
