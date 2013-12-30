@@ -140,7 +140,7 @@ SLA7073MPRTに差し替えることができ、こちらは3A流すことがで�
 # ちっちゃい3軸ステージATTSBOXのつくり方
 
   Arduinoでコントロールできる数値制御トレーニングキット。3Dプリンタを目指してGo!。
-  詳しい解説はtogetter(http://togetter.com/li/609192)を見て下さいね。
+  詳しい解説は[togetter](http://togetter.com/li/609192)を見て下さいね。
 
 ## はじめに
 
